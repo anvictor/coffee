@@ -1,0 +1,122 @@
+.triggerPath{
+  display: flex;
+  justify-content: center;
+}
+.drinkInterface{
+  display: flex;
+  justify-content: space-between;
+}
+.choosingInterface{
+  align-self: center;
+  width: 150px;
+  height: min-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #e0e0e0c2;
+  border-radius: 5px;
+}
+.sugarPlace{
+  display: flex;
+  margin-top: 2px;
+}
+.labelSugar_true{
+  align-self: center;
+  margin: -21px -4px 0px 12px;
+  padding: 5px;
+  background-color: #e0e0e0;
+  box-shadow: 0px 3px 5px -1px rgba(0,0,0,0.2), 0px 6px 10px 0px rgba(0,0,0,0.14), 0px 1px 18px 0px rgba(0,0,0,0.12);
+  border-radius: 4px;
+}
+.labelSugar_false{
+  align-self: center;
+  margin: -21px -4px 0px 12px;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.12);
+  color: grey;
+  border-radius: 4px;
+}
+button.signPlace{
+  height: 45px;
+  width: 45px;
+  font-size: 25px;
+}
+.sugarBadge{
+  top: 12px;
+  right: 9px;
+}
+.coinCupPlace{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.coinPlace{
+  align-self: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.coinBadge{
+  top: 42px;
+  right: 36px;
+}
+.Coin{
+  margin: -30px -40px 50px 40px;
+  cursor: pointer;
+  transition: 200ms;
+}
+.Coin:hover{
+  margin: -20px -40px 40px 40px
+}
+
+.CoinAcceptor{
+  cursor: pointer;
+}
+.start_cupPlace{
+  margin-top: 15px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.cupPlace{
+  align-self: center;
+  margin-top: 20px;
+  position: relative;
+  width: 86px;
+  height: 142px;
+}
+/*Null Cup B/W*/
+.PrepareImg_null{position: absolute;
+  top: 1px;left: 0px;
+}
+/*Null Cup Color*/
+.PrepareImg_null_Color{position: absolute;
+  bottom: -150px;left: 0px;
+}
+/*Plastic Cup B/W*/
+.PrepareImg_plastic{position: absolute;
+  top: 1px;left: -95px;
+}
+/*Plastic Cup Color*/
+.PrepareImg_plastic_Color{position: absolute;
+  bottom: -150px;left: -190.5px;
+}
+/*Paper Cup B/W*/
+.PrepareImg_paper{position: absolute;
+  top: -150px;left: -95px;
+}
+/*Paper Cup Color*/
+.PrepareImg_paper_Color{position: absolute;
+  bottom: 0px;left: -190.5px;
+}
+button.startBtn{
+  width: 60%;
+  align-self: center;
+}
+@media screen and (orientation:landscape)  {
+  .coinCupPlace {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
