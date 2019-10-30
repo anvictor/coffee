@@ -5,26 +5,14 @@ import Button from "@material-ui/core/Button/Button";
 import Badge from '@material-ui/core/Badge';
 import SetLog from '../../constants/set-log';
 import Fab from "@material-ui/core/Fab/Fab";
+
 export default class Drink extends Component {
   constructor(props) {
+    console.log('Drink props', props);
     super(props);
-    this.state = {
-      // choosing interface disabled
-      disabled: true,
-      title: "Drink",
-      path: {url:'/consumables', caption: 'CONSUMABLES'},
-      isArabica: 'default',
-      isArabusta: 'default',
-      isCream: 'default',
-      isPlastic: 'default',
-      isPaper: 'default',
-      cup: 'null',
-      sugar: 0,
-      coins: 0,
-      startAt: new Date()
-    };
+    this.state = props;
     this.handleArabicaSelected = this.handleArabicaSelected.bind(this);
-    this.handleArabustaSelected = this.handleArabustaSelected.bind(this);
+    this.handleRobustaSelected = this.handleRobustaSelected.bind(this);
     this.handleCreamToggled = this.handleCreamToggled.bind(this);
     this.handleCupPlasticSelected = this.handleCupPlasticSelected.bind(this);
     this.handleCupPaperSelected = this.handleCupPaperSelected.bind(this);
@@ -32,18 +20,19 @@ export default class Drink extends Component {
     this.handleMoreSugarClicked = this.handleMoreSugarClicked.bind(this);
     this.handleCoinInserted = this.handleCoinInserted.bind(this);
     this.handleStartClicked = this.handleStartClicked.bind(this);
-
   }
 
   render() {
+    console.log('this.props', this.props);
     return <div className='drinkScreen'>
       <div className='triggerPath'>
-        <TriggerPath path={this.state.path}/>
+        <TriggerPath path={this.props.drinkState.path}/>
       </div>
       <div className='drinkInterface'>
         <div className='coinCupPlace'>
           <div onClick={this.handleCoinInserted} className='coinPlace'>
-            <Badge color="primary" badgeContent={this.state.coins} className='coinBadge'>
+            <Badge color="primary" badgeContent={this.props.drinkState.coins}
+                   className='coinBadge'>
               <img className='Coin' src="./assets/img/Coin.svg" alt="INSERT COIN"/>
             </Badge>
             <img className='CoinAcceptor' src="./assets/img/CoinAcceptor.svg" alt="INSERT COIN"/>
@@ -51,7 +40,7 @@ export default class Drink extends Component {
 
 
           <div className='start_cupPlace'>
-            <Button className='startBtn' disabled={this.state.disabled} onClick={this.handleStartClicked} variant="contained" color='primary'>
+            <Button className='startBtn' disabled={this.props.drinkState.startDisabled} onClick={this.handleStartClicked} variant="contained" color='primary'>
               start
             </Button>
             <div className='cupPlace'>
@@ -59,41 +48,41 @@ export default class Drink extends Component {
                 position: 'relative',
                 overflow: 'hidden',
                 width: "100%",
-                height: 10*(10 - this.state.coins)+'%'}}>
-                <img className={'PrepareImg_' + this.state.cup} src="./assets/img/Prepare.svg" alt="prepare"/>
+                height: 10*(10 - this.props.drinkState.coins)+'%'}}>
+                <img className={'PrepareImg_' + this.props.drinkState.cup} src="./assets/img/Prepare.svg" alt="prepare"/>
               </div>
               <div style={{transition: '1000ms',
                 position: 'relative',
                 overflow: 'hidden',
                 width: "100%",
-                height: 10*(this.state.coins)+'%'}}>
-                <img className={'PrepareImg_' + this.state.cup + '_Color'} src="./assets/img/Prepare.svg" alt="prepare"/>
+                height: 10*(this.props.drinkState.coins)+'%'}}>
+                <img className={'PrepareImg_' + this.props.drinkState.cup + '_Color'} src="./assets/img/Prepare.svg" alt="prepare"/>
               </div>
             </div>
           </div>
 
         </div>
         <div className='choosingInterface'>
-          <Button disabled={this.state.disabled} onClick={this.handleArabicaSelected} variant="contained" color={this.state.isArabica}>
+          <Button disabled={this.props.drinkState.menuDisabled} onClick={this.handleArabicaSelected} variant="contained" color={this.props.drinkState.orderArabica}>
             ARABICA
           </Button>
-          <Button disabled={this.state.disabled}  onClick={this.handleArabustaSelected} variant="contained" color={this.state.isArabusta}>
-            ARABUSTA
+          <Button disabled={this.props.drinkState.menuDisabled} onClick={this.handleRobustaSelected} variant="contained" color={this.props.orderRobusta}>
+            ROBUSTA
           </Button>
-          <Button disabled={this.state.disabled}  onClick={this.handleCreamToggled} variant="contained" color={this.state.isCream}>
+          <Button disabled={this.props.drinkState.menuDisabled}  onClick={this.handleCreamToggled} variant="contained" color={this.props.drinkState.orderCream}>
             CREAM
           </Button>
           <div className='sugarPlace'>
-            <Fab disabled={this.state.disabled}  onClick={this.handleLessSugarClicked} className='signPlace'>-</Fab>
-            <Badge color="primary" badgeContent={this.state.sugar} className='sugarBadge'>
-              <div className={'labelSugar_' + !this.state.disabled}>SUGAR</div>
+            <Fab disabled={this.props.drinkState.menuDisabled}  onClick={this.handleLessSugarClicked} className='signPlace'>-</Fab>
+            <Badge color="primary" badgeContent={this.props.drinkState.sugar} className='sugarBadge'>
+              <div className={`labelSugar_${!this.props.drinkState.menuDisabled}`}>SUGAR</div>
             </Badge>
-            <Fab disabled={this.state.disabled}  onClick={this.handleMoreSugarClicked} className='signPlace'>+</Fab>
+            <Fab disabled={this.props.drinkState.menuDisabled}  onClick={this.handleMoreSugarClicked} className='signPlace'>+</Fab>
           </div>
-          <Button disabled={this.state.disabled}  onClick={this.handleCupPlasticSelected} variant="contained" color={this.state.isPlastic}>
+          <Button disabled={this.props.drinkState.menuDisabled}  onClick={this.handleCupPlasticSelected} variant="contained" color={this.props.drinkState.isPlastic}>
             PLASTIC CUP
           </Button>
-          <Button disabled={this.state.disabled}  onClick={this.handleCupPaperSelected} variant="contained" color={this.state.isPaper}>
+          <Button disabled={this.props.drinkState.menuDisabled}  onClick={this.handleCupPaperSelected} variant="contained" color={this.props.drinkState.isPaper}>
             PAPER CUP
           </Button>
         </div>
@@ -103,82 +92,52 @@ export default class Drink extends Component {
 
   handleArabicaSelected(){
     SetLog('Arabica Selected');
-    this.setState({
-      isArabica: "secondary",
-      isArabusta: 'default'
-    })
+    this.props.orderArabica();
   }
-  handleArabustaSelected(){
+  handleRobustaSelected(){
     SetLog('Arabusta Selected');
-    this.setState({
-      isArabica: "default",
-      isArabusta: 'secondary'
-    })
+    this.props.orderRobusta();
   }
   handleCreamToggled(){
-    if (this.state.isCream === "default"){
+    if (this.props.drink.isCream === "default"){
       SetLog('Cream Selected');
-      this.setState({
-        isCream: "secondary",
-      })
-    } else if (this.state.isCream === "secondary"){
+      this.props.orderCream();
+    } else if (this.props.drink.isCream === "secondary"){
       SetLog('Cream canceled');
-      this.setState({
-        isCream: "default",
-      })
+      this.props.cancelCream();
     }
   }
   handleCupPlasticSelected(){
     SetLog('Plastic Cup Selected');
-    this.setState({
-      isPlastic: "secondary",
-      isPaper: 'default',
-      cup: 'plastic',
-    })
+    this.props.orderPlasticCup();
   }
   handleCupPaperSelected(){
     SetLog('Paper Cup Selected');
-    this.setState({
-      isPlastic: "default",
-      isPaper: 'secondary',
-      cup: 'paper',
-    })
+    this.props.orderPaperCup();
   }
   handleLessSugarClicked(){
-    if (this.state.sugar > 0){
-      this.setState({
-        sugar: this.state.sugar - 1
-      })
-      SetLog('Less (-) Sugar Clicked. Now = ' + (this.state.sugar-1));
+    if (this.props.sugar > 0){
+      this.props.lessSugar();
+      SetLog('Less (-) Sugar Clicked. Now = ' + (this.props.drink.sugar-1));
     }
   }
   handleMoreSugarClicked(){
-    if (this.state.sugar < 4){
-      this.setState({
-        sugar: this.state.sugar + 1
-      })
-      SetLog('More Sugar Clicked. Now = ' + (this.state.sugar+1));
+    if (this.props.sugar < 4){
+      this.props.moreSugar();
+      SetLog('More Sugar Clicked. Now = ' + (this.props.drink.sugar+1));
     }
   }
 
   handleCoinInserted(){
-    if (this.state.coins < 10){
-      this.setState({
-        coins: this.state.coins + 1,
-        disabled: false
-      })
-      SetLog('Next Coin Inserted. Coins = ' + (this.state.coins+1));
+    if (this.props.coins < 10){
+      this.props.putCoin();
+      SetLog('Next Coin Inserted. Coins = ' + (this.props.drink.coins+1));
     }
   }
 
   handleStartClicked(){
-    if (this.state.coins >=2){
-      this.setState({
-        startAt: new Date(),
-        coins: this.state.coins-1
-      })
-    }else {
-      this.setState({
+    if (this.props.drink.coins >1){
+      this.props.startClicked({
         disabled: true,
         isArabica: 'default',
         isArabusta: 'default',
@@ -187,9 +146,35 @@ export default class Drink extends Component {
         isPaper: 'default',
         cup: 'null',
         sugar: 0,
-        coins: 0
-      })
+        coins: this.props.drink.coins-1,
+        startAt: new Date(),
+        timeLeft: 10
+      });
     }
-    SetLog('Started. Coins = '+(this.state.coins-1));
+    else {
+      this.props.startClicked({
+        disabled: true,
+        isArabica: 'default',
+        isArabusta: 'default',
+        isCream: 'default',
+        isPlastic: 'default',
+        isPaper: 'default',
+        cup: 'null',
+        sugar: 0,
+        coins: 0,
+        startAt: new Date(),
+        timeLeft: 10000
+      });
+    }
+    let timer = setInterval(()=>{
+      if (this.props.drink.timeLeft){
+        this.props.countDown();
+        SetLog('Coffe is Cooking. Time left = '+(this.props.drink.timeLeft));
+      } else {
+        clearInterval(timer);
+        SetLog('Coffee is Done. Take a Cup');
+      }
+    }, 1000);
+    SetLog('Started. Coins = '+(this.props.drink.coins-1));
   }
 };

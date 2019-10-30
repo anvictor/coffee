@@ -1,19 +1,56 @@
 const InitialState = {
-  consumables:{
-    arabica: 0, //1 ->> 3
-    arabusta: 0, //1 -> 3
-    cream: 0, //1 ->> 3
-    sugar: 0, //4->> 12
-    cupPlastic: 0, //1 ->> 3
-    cupPaper: 0 //1 ->> 3
+  refill:{
+    title: "Refill",
+    path: {url:'/drink', caption: 'DRINK'},
+    stockArabica: 0,
+    stockArabicaMin: 1,
+    stockArabicaMax: 3,
+    stockRobusta: 0,
+    stockRobustaMin: 1,
+    stockRobustaMax: 3,
+    stockCream: 0,
+    stockCreamMin: 1,
+    stockCreamMax: 5,
+    stockPlasticCup: 0,
+    stockPlasticCupMin: 1,
+    stockPlasticCupMax: 9,
+    stockPaperCup: 0,
+    stockPaperCupMin: 1,
+    stockPaperCupMax: 9,
+    stockSugar: 0,
+    stockSugarMin: 4,
+    stockSugarMax: 21,
   },
-  coffee: '', // "arabica" || "arabusta"
-  cream: false, // true || false
-  sugar: 0, // 0-4
-  cupClass: "plastic", // "plastic" || "paper"
-  coin: 0, // 1 ->> 3
-  isCup: false, // true || false
-  isStart: false, // true || false
-  isRunning: 10, // 10-0 seconds countdown
+  drink: {
+    // choosing interface disabled
+    title: "Drink",
+    path: {url:'/refill', caption: 'refill'},
+    menuDisabled: true,
+    startDisabled: true,
+    stockedEnough: false,
+    orderedEnough: false,
+    coins: 0,
+    coinsMin: 1,
+    coinsMax: 9,
+    orderedArabica: true,
+    orderedRobusta: 0,
+    orderedRobustaMin: 0,
+    orderedRobustaMax: 1,
+    orderedCream: 0,
+    orderedCreamMin: 0,
+    orderedCreamMax: 1,
+    orderedPlasticCup: 0,
+    orderedPlasticCupMin: 0,
+    orderedPlasticCupMax: 1,
+    orderedPaperCup: 0,
+    orderedPaperCupMin: 0,
+    orderedPaperCupMax: 1,
+    orderedSugar: 0,
+    orderedSugarMin: 0,
+    orderedSugarMax: 4,
+    cupEnabled: false,
+    cupTaken: false,
+    preparing: false
+  }
 };
 export default InitialState
