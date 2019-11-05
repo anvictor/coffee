@@ -8,7 +8,7 @@ class TriggerPath extends Component{
   render(){
     return (
       <Link to={this.props.path.url}>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color={this.props.path.color}>
           {this.props.path.caption}
         </Button>
       </Link>

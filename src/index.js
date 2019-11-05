@@ -3,14 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { createStore } from 'redux';
 import {Provider} from 'react-redux';
-import InitialState from './constants/initialState';
 import {store} from './store/configureStore';
 
-// const store = createStore(()=>{}, {});
-// const initialState = InitialState;
-// console.log('src/index',initialState);
 ReactDOM.render(
   <Provider store={store}>
     <App />

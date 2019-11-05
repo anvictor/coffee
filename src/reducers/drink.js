@@ -5,41 +5,45 @@ export default function drinkReducer(state = InitialState.drink, action) {
 
   switch (action.type) {
     case types.ORDERED_ENOUGH:
-      return {...state, orderedEnough: true}
+      return {...state, isOrderedEnough: true};
     case types.ORDERED_NOT_ENOUGH:
-      return {...state, orderedEnough: false}
+      return {...state, isOrderedEnough: false};
+    case types.STOCKED_ENOUGH:
+      return {...state, isStockedEnough: true};
+    case types.STOCKED_NOT_ENOUGH:
+      return {...state, isStockedEnough: false};
     case types.PUT_COIN:
-      return {...state, putCoin: state.putCoin + 1}
+      return {...state, coins: state.coins + 1};
     case types.USE_COIN:
-      return {...state, useCoin: state.useCoin - 1}
+      return {...state, coins: state.coins - 1};
     case types.ORDER_ARABICA:
-      return {...state, orderedArabica: state.orderedArabica + 1}
+      return {...state, orderedArabica: true};
     case types.CANCEL_ARABICA:
-      return {...state, orderedArabica: 0}
+      return {...state, orderedArabica: false};
     case types.ORDER_ROBUSTA:
-      return {...state, orderedRobusta: state.orderedRobusta + 1}
+      return {...state, orderedRobusta: true};
     case types.CANCEL_ROBUSTA:
-      return {...state, orderedRobusta: 0}
+      return {...state, orderedRobusta: false};
     case types.ORDER_CREAM:
-      return {...state, orderedCream: state.orderedCream + 1}
+      return {...state, orderedCream: true};
     case types.CANCEL_CREAM:
-      return {...state, orderedCream: 0}
+      return {...state, orderedCream: false};
     case types.ORDER_PLASTIC_CUP:
-      return {...state, orderedPlasticCup: state.orderedPlasticCup + 1}
+      return {...state, orderedPlasticCup: true};
     case types.CANCEL_PLASTIC_CUP:
-      return {...state, orderedPlasticCup: 0}
+      return {...state, orderedPlasticCup: false};
     case types.ORDER_PAPER_CUP:
-      return {...state, orderedPaperCup: state.orderedPaperCup + 1}
+      return {...state, orderedPaperCup: true};
     case types.CANCEL_PAPER_CUP:
-      return {...state, orderedPaperCup: 0}
+      return {...state, orderedPaperCup: false};
     case types.LESS_SUGAR:
-      return {...state, orderedSugar: state.orderedSugar - 1}
+      return {...state, orderedSugar: state.orderedSugar - 1};
     case types.MORE_SUGAR:
-      return {...state, orderedSugar: state.orderedSugar + 1}
-    case types.START:
-      return {...state, preparing: true}
-    case types.STOP:
-      return {...state, preparing: false}
+      return {...state, orderedSugar: state.orderedSugar + 1};
+    case types.COOK_COFFEE:
+      return {...state, preparing: true};
+    case types.STOP_COOKING:
+      return {...state, preparing: false};
 
     default:
       return state

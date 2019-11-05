@@ -11,12 +11,12 @@ export default class Card extends Component {
   render() {
     return <div className='card'>
       <img className='imgConsumable' src={'./assets/img/'+this.props.picture} alt={this.props.caption}/>
-      <Badge color="primary" badgeContent={this.props.value} className='cardBadge'>
-        <div>
-          {/*Badge can not be without child tag*/}
+      <Badge color={this.props.color} badgeContent={this.props.value} className='cardBadge'>
+        <div notice={'This div needed. Badge can not be without child tag'}>
+          {/*Warning:(15, 9) XML tag has empty body*/}
         </div>
       </Badge>
-      <Button className='addBtn' onClick={(e) =>{this.props.handleConsumableAdded(e)}} variant="contained" color='primary'>
+      <Button className='addBtn' onClick={(e) =>{this.props.handleAddConsumableClicked(e)}} variant="contained" color={this.props.color}>
         {this.props.caption}
       </Button>
     </div>

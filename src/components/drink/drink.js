@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import TriggerPath from '../link';
 import './drink.css';
 import Button from "@material-ui/core/Button/Button";
@@ -8,9 +8,7 @@ import Fab from "@material-ui/core/Fab/Fab";
 
 export default class Drink extends Component {
   constructor(props) {
-    console.log('Drink props', props);
     super(props);
-    this.state = props;
     this.handleArabicaSelected = this.handleArabicaSelected.bind(this);
     this.handleRobustaSelected = this.handleRobustaSelected.bind(this);
     this.handleCreamToggled = this.handleCreamToggled.bind(this);
@@ -23,10 +21,12 @@ export default class Drink extends Component {
   }
 
   render() {
-    console.log('this.props', this.props);
     return <div className='drinkScreen'>
-      <div className='triggerPath'>
-        <TriggerPath path={this.props.drinkState.path}/>
+      <div className='triggerPath' onClick={this.handleTriggerPathClicked}>
+        <TriggerPath path={{
+          ...this.props.drinkState.path,
+          color: this.props.drinkState.isStockedEnough ? 'primary' : 'secondary'
+        }}/>
       </div>
       <div className='drinkInterface'>
         <div className='coinCupPlace'>
@@ -40,49 +40,71 @@ export default class Drink extends Component {
 
 
           <div className='start_cupPlace'>
-            <Button className='startBtn' disabled={this.props.drinkState.startDisabled} onClick={this.handleStartClicked} variant="contained" color='primary'>
-              start
+            <Button className='startBtn'
+                    disabled={!(this.props.drinkState.isStockedEnough &&
+                      this.props.drinkState.coins > 0)}
+                    onClick={this.handleStartClicked}
+                    variant="contained" color='primary'>
+              cook coffee
             </Button>
             <div className='cupPlace'>
-              <div style={{transition: '1000ms',
+              <div style={{
+                transition: '1000ms',
                 position: 'relative',
                 overflow: 'hidden',
                 width: "100%",
-                height: 10*(10 - this.props.drinkState.coins)+'%'}}>
-                <img className={'PrepareImg_' + this.props.drinkState.cup} src="./assets/img/Prepare.svg" alt="prepare"/>
+                height: 10 * (10 - this.props.drinkState.coins) + '%'
+              }}>
+                <img className={`PrepareImg_${this.props.drinkState.orderedPlasticCup
+                  ? 'plastic' : 'paper'}`} src="./assets/img/Prepare.svg" alt="prepare"/>
               </div>
-              <div style={{transition: '1000ms',
+              <div style={{
+                transition: '1000ms',
                 position: 'relative',
                 overflow: 'hidden',
                 width: "100%",
-                height: 10*(this.props.drinkState.coins)+'%'}}>
-                <img className={'PrepareImg_' + this.props.drinkState.cup + '_Color'} src="./assets/img/Prepare.svg" alt="prepare"/>
+                height: 10 * (this.props.drinkState.coins) + '%'
+              }}>
+                <img className={`PrepareImg_${this.props.drinkState.orderedPlasticCup
+                  ? 'plastic' : 'paper'}_Color`} src="./assets/img/Prepare.svg" alt="prepare"/>
               </div>
             </div>
           </div>
 
         </div>
         <div className='choosingInterface'>
-          <Button disabled={this.props.drinkState.menuDisabled} onClick={this.handleArabicaSelected} variant="contained" color={this.props.drinkState.orderArabica}>
+          <Button disabled={!this.props.drinkState.isStockedEnough}
+                  onClick={this.handleArabicaSelected} variant="contained"
+                  color={this.props.drinkState.orderedArabica ? 'primary' : 'default'}>
             ARABICA
           </Button>
-          <Button disabled={this.props.drinkState.menuDisabled} onClick={this.handleRobustaSelected} variant="contained" color={this.props.orderRobusta}>
+          <Button disabled={!this.props.drinkState.isStockedEnough}
+                  onClick={this.handleRobustaSelected} variant="contained"
+                  color={this.props.drinkState.orderedRobusta ? 'primary' : 'default'}>
             ROBUSTA
           </Button>
-          <Button disabled={this.props.drinkState.menuDisabled}  onClick={this.handleCreamToggled} variant="contained" color={this.props.drinkState.orderCream}>
+          <Button disabled={!this.props.drinkState.isStockedEnough}
+                  onClick={this.handleCreamToggled} variant="contained"
+                  color={this.props.drinkState.orderedCream ? 'primary' : 'default'}>
             CREAM
           </Button>
           <div className='sugarPlace'>
-            <Fab disabled={this.props.drinkState.menuDisabled}  onClick={this.handleLessSugarClicked} className='signPlace'>-</Fab>
-            <Badge color="primary" badgeContent={this.props.drinkState.sugar} className='sugarBadge'>
-              <div className={`labelSugar_${!this.props.drinkState.menuDisabled}`}>SUGAR</div>
+            <Fab disabled={!this.props.drinkState.isStockedEnough}
+                 onClick={this.handleLessSugarClicked} className='signPlace'>-</Fab>
+            <Badge color="primary" badgeContent={this.props.drinkState.orderedSugar} className='sugarBadge'>
+              <div className={`labelSugar_${this.props.drinkState.isStockedEnough}`}>SUGAR</div>
             </Badge>
-            <Fab disabled={this.props.drinkState.menuDisabled}  onClick={this.handleMoreSugarClicked} className='signPlace'>+</Fab>
+            <Fab disabled={!this.props.drinkState.isStockedEnough}
+                 onClick={this.handleMoreSugarClicked} className='signPlace'>+</Fab>
           </div>
-          <Button disabled={this.props.drinkState.menuDisabled}  onClick={this.handleCupPlasticSelected} variant="contained" color={this.props.drinkState.isPlastic}>
+          <Button disabled={!this.props.drinkState.isStockedEnough}
+                  onClick={this.handleCupPlasticSelected} variant="contained"
+                  color={this.props.drinkState.orderedPlasticCup ? 'primary' : 'default'}>
             PLASTIC CUP
           </Button>
-          <Button disabled={this.props.drinkState.menuDisabled}  onClick={this.handleCupPaperSelected} variant="contained" color={this.props.drinkState.isPaper}>
+          <Button disabled={!this.props.drinkState.isStockedEnough}
+                  onClick={this.handleCupPaperSelected} variant="contained"
+                  color={this.props.drinkState.orderedPaperCup ? 'primary' : 'default'}>
             PAPER CUP
           </Button>
         </div>
@@ -90,91 +112,95 @@ export default class Drink extends Component {
     </div>
   };
 
-  handleArabicaSelected(){
-    SetLog('Arabica Selected');
+  handleTriggerPathClicked(){
+    SetLog('The Supplies door has opened')
+  }
+
+  handleArabicaSelected() {
+    SetLog('Arabica Ordered');
     this.props.orderArabica();
+    this.props.cancelRobusta();
   }
-  handleRobustaSelected(){
-    SetLog('Arabusta Selected');
+
+  handleRobustaSelected() {
+    SetLog('Robusta Ordered');
     this.props.orderRobusta();
+    this.props.cancelArabica();
   }
-  handleCreamToggled(){
-    if (this.props.drink.isCream === "default"){
-      SetLog('Cream Selected');
+
+  handleCreamToggled() {
+    if (!this.props.drinkState.orderedCream) {
+      SetLog('Cream Ordered');
       this.props.orderCream();
-    } else if (this.props.drink.isCream === "secondary"){
+    } else {
       SetLog('Cream canceled');
       this.props.cancelCream();
     }
   }
-  handleCupPlasticSelected(){
-    SetLog('Plastic Cup Selected');
+
+  handleCupPlasticSelected() {
+    SetLog('Plastic Cup Ordered');
     this.props.orderPlasticCup();
+    this.props.cancelPaperCup();
   }
-  handleCupPaperSelected(){
-    SetLog('Paper Cup Selected');
+
+  handleCupPaperSelected() {
+    SetLog('Paper Cup Ordered');
     this.props.orderPaperCup();
+    this.props.cancelPlasticCup();
   }
-  handleLessSugarClicked(){
-    if (this.props.sugar > 0){
+
+  handleLessSugarClicked() {
+    if (this.props.drinkState.orderedSugar > 0) {
       this.props.lessSugar();
-      SetLog('Less (-) Sugar Clicked. Now = ' + (this.props.drink.sugar-1));
+      SetLog('Less Sugar Ordered. Now = ' + (this.props.drinkState.orderedSugar - 1));
+    } else {
+      SetLog('Less Sugar Impossible. Now = ' + (this.props.drinkState.orderedSugar));
     }
   }
-  handleMoreSugarClicked(){
-    if (this.props.sugar < 4){
+
+  handleMoreSugarClicked() {
+    if (this.props.drinkState.orderedSugar < this.props.drinkState.orderedSugarMax) {
       this.props.moreSugar();
-      SetLog('More Sugar Clicked. Now = ' + (this.props.drink.sugar+1));
+      SetLog('More Sugar Ordered. Now = ' + (this.props.drinkState.orderedSugar + 1));
+    } else {
+      SetLog('More Sugar Impossible. Reached maximum capacity. Now = ' + (this.props.drinkState.orderedSugar));
     }
   }
 
-  handleCoinInserted(){
-    if (this.props.coins < 10){
+  handleCoinInserted() {
+    if (this.props.drinkState.coins < this.props.drinkState.coinsMax) {
       this.props.putCoin();
-      SetLog('Next Coin Inserted. Coins = ' + (this.props.drink.coins+1));
+      SetLog('Next Coin Inserted. Coins = ' + (this.props.drinkState.coins + 1));
     }
   }
 
-  handleStartClicked(){
-    if (this.props.drink.coins >1){
-      this.props.startClicked({
-        disabled: true,
-        isArabica: 'default',
-        isArabusta: 'default',
-        isCream: 'default',
-        isPlastic: 'default',
-        isPaper: 'default',
-        cup: 'null',
-        sugar: 0,
-        coins: this.props.drink.coins-1,
-        startAt: new Date(),
-        timeLeft: 10
-      });
+  handleStartClicked() {
+    let log = '';
+    this.props.useCoin();
+    this.props.cookCoffee();
+    if (this.props.drinkState.orderedArabica) {
+      this.props.useArabica();
+      log += '1 Arabica';
+    } else {
+      this.props.useRobusta();
+      log += '1 Robusta';
     }
-    else {
-      this.props.startClicked({
-        disabled: true,
-        isArabica: 'default',
-        isArabusta: 'default',
-        isCream: 'default',
-        isPlastic: 'default',
-        isPaper: 'default',
-        cup: 'null',
-        sugar: 0,
-        coins: 0,
-        startAt: new Date(),
-        timeLeft: 10000
-      });
+    if (this.props.drinkState.orderedPlasticCup) {
+      this.props.usePlasticCup();
+      log += ', 1 Plastic Cup';
+    } else {
+      this.props.usePaperCup();
+      log += ', 1 Paper Cup';
     }
-    let timer = setInterval(()=>{
-      if (this.props.drink.timeLeft){
-        this.props.countDown();
-        SetLog('Coffe is Cooking. Time left = '+(this.props.drink.timeLeft));
-      } else {
-        clearInterval(timer);
-        SetLog('Coffee is Done. Take a Cup');
-      }
-    }, 1000);
-    SetLog('Started. Coins = '+(this.props.drink.coins-1));
+    if (this.props.drinkState.orderedCream) {
+      this.props.useCream();
+      log += ', 1 Cream';
+    }
+    if (this.props.drinkState.orderedSugar > 0) {
+      this.props.useSugar(this.props.drinkState.orderedSugar);
+      log += `, ${this.props.drinkState.orderedSugar} Sugar`;
+    }
+    SetLog(`Used: ${log}`);
   }
 };

@@ -6,11 +6,8 @@ import SetLog from "../../constants/set-log";
 
 export default class Refill extends Component {
   constructor(props) {
-    console.log('Refill props', props);
     super(props);
-    this.state = props.refill;
-
-    this.handleConsumableAdded = this.handleConsumableAdded.bind(this);
+    this.handleAddConsumableClicked = this.handleAddConsumableClicked.bind(this);
   }
 
   render() {
@@ -19,84 +16,104 @@ export default class Refill extends Component {
       <div className='container'>
         <div className='top_or_left'>
           <Card
-            picture={(this.props.arabica >= this.props.arabicaMin ? "ArabicaColor.svg" : "Arabica.svg")}
+            color = {(this.props.refillState.stockArabica >= this.props.refillState.stockArabicaMin ? "secondary" : "primary")}
+            picture={(this.props.refillState.stockArabica >= this.props.refillState.stockArabicaMin ? "ArabicaColor.svg" : "Arabica.svg")}
             caption={'Arabica'}
-            value={this.props.arabica}
-            min={this.props.arabicaMin}
-            max={this.props.arabicaMax}
-            handleConsumableAdded={this.handleConsumableAdded}
+            value={this.props.refillState.stockArabica}
+            min={this.props.refillState.stockArabicaMin}
+            max={this.props.refillState.stockArabicaMax}
+            handleAddConsumableClicked={this.handleAddConsumableClicked}
           />
           <Card
-            picture={(this.props.arabusta >= this.props.arabustaMin ? "ArabustaColor.svg" : "Arabusta.svg")}
-            caption={'Arabusta'}
-            value={this.props.arabusta}
-            min={this.props.arabustaMin}
-            max={this.props.arabustaMax}
-            handleConsumableAdded={this.handleConsumableAdded}
+            color = {(this.props.refillState.stockRobusta >= this.props.refillState.stockRobustaMin ? "secondary" : "primary")}
+            picture={(this.props.refillState.stockRobusta >= this.props.refillState.stockRobustaMin ? "RobustaColor.svg" : "Robusta.svg")}
+            caption={'Robusta'}
+            value={this.props.refillState.stockRobusta}
+            min={this.props.refillState.stockRobustaMin}
+            max={this.props.refillState.stockRobustaMax}
+            handleAddConsumableClicked={this.handleAddConsumableClicked}
           />
         </div>
         <div className='down_or_right'>
           <div className='Line first'>
             <Card
-              picture={(this.props.cream >= this.props.creamMin ? "CreamColor.svg" : "Cream.svg")}
+              color = {(this.props.refillState.stockCream >= this.props.refillState.stockCreamMin ? "secondary" : "primary")}
+              picture={(this.props.refillState.stockCream >= this.props.refillState.stockCreamMin ? "CreamColor.svg" : "Cream.svg")}
               caption={'Cream'}
-              value={this.props.cream}
-              min={this.props.creamMin}
-              max={this.props.creamMax}
-              handleConsumableAdded={this.handleConsumableAdded}
+              value={this.props.refillState.stockCream}
+              min={this.props.refillState.stockCreamMin}
+              max={this.props.refillState.stockCreamMax}
+              handleAddConsumableClicked={this.handleAddConsumableClicked}
             />
             <Card
-              picture={(this.props.sugar >= this.props.sugarMin ? "SugarColor.svg" : "Sugar.svg")}
+              color = {(this.props.refillState.stockSugar >= this.props.refillState.stockSugarMin ? "secondary" : "primary")}
+              picture={(this.props.refillState.stockSugar >= this.props.refillState.stockSugarMin ? "SugarColor.svg" : "Sugar.svg")}
               caption={'Sugar'}
-              value={this.props.sugar}
-              min={this.props.sugarMin}
-              max={this.props.sugarMax}
-              handleConsumableAdded={this.handleConsumableAdded}
+              value={this.props.refillState.stockSugar}
+              min={this.props.refillState.stockSugarMin}
+              max={this.props.refillState.stockSugarMax}
+              handleAddConsumableClicked={this.handleAddConsumableClicked}
             />
           </div>
           <div className='Line second'>
             <Card
-              picture={(this.props.plasticCup >= this.props.plasticCupMin ? "PlasticCupColor.svg" : "PlasticCup.svg")}
+              color = {(this.props.refillState.stockPlasticCup >= this.props.refillState.stockPlasticCupMin ? "secondary" : "primary")}
+              picture={(this.props.refillState.stockPlasticCup >= this.props.refillState.stockPlasticCupMin ? "PlasticCupColor.svg" : "PlasticCup.svg")}
               caption={'Plastic Cup'}
-              value={this.props.plasticCup}
-              min={this.props.plasticCupMin}
-              max={this.props.plasticCupMax}
-              handleConsumableAdded={this.handleConsumableAdded}
+              value={this.props.refillState.stockPlasticCup}
+              min={this.props.refillState.stockPlasticCupMin}
+              max={this.props.refillState.stockPlasticCupMax}
+              handleAddConsumableClicked={this.handleAddConsumableClicked}
             />
             <Card
-              picture={(this.state.paperCup >= this.props.paperCupMin ? "PaperCupColor.svg" : "PaperCup.svg")}
+              color = {(this.props.refillState.stockPaperCup >= this.props.refillState.stockPaperCupMin ? "secondary" : "primary")}
+              picture={(this.props.refillState.stockPaperCup >= this.props.refillState.stockPaperCupMin ? "PaperCupColor.svg" : "PaperCup.svg")}
               caption={'Paper Cup'}
-              value={this.props.paperCup}
-              min={this.props.paperCupMin}
-              max={this.props.paperCupMax}
-              handleConsumableAdded={this.handleConsumableAdded}
+              value={this.props.refillState.stockPaperCup}
+              min={this.props.refillState.stockPaperCupMin}
+              max={this.props.refillState.stockPaperCupMax}
+              handleAddConsumableClicked={this.handleAddConsumableClicked}
             />
           </div>
         </div>
       </div>
-      <div className='Bottom_or_Left'>
-        <TriggerPath path={this.props.refillState.path}/>
+      <div className='Bottom_or_Left' onClick={this.handleTriggerPathClicked}>
+        <TriggerPath path={{...this.props.refillState.path,
+          color: this.props.isStockedEnough?'secondary':'primary'}}/>
         <div className='blackBox'>{
-          this.props.arabica +
-          this.props.arabusta +
-          this.props.cream +
-          this.props.sugar +
-          this.props.plasticCup +
-          this.props.paperCup
+          this.props.refillState.stockArabica +
+          this.props.refillState.stockRobusta +
+          this.props.refillState.stockCream +
+          this.props.refillState.stockSugar +
+          this.props.refillState.stockPlasticCup +
+          this.props.refillState.stockPaperCup
         }</div>
       </div>
     </div>
   };
 
-  handleConsumableAdded(e) {
-    let consumable = this._multiWordsToLowerCamelCase(e.currentTarget.innerText);
-    if (this.state[`${consumable}`] < this.state[`${consumable}Max`]) {
-      let obj = {};
-      obj[`${consumable}`] = this.state[`${consumable}`] + 1
-      this.setState(obj);
-      SetLog(consumable + ' Consumable Added now =' + (this.state[`${consumable}`] + 1));
+  handleTriggerPathClicked(){
+    SetLog('The Supplies door has closed')
+  }
+
+  handleAddConsumableClicked(e) {
+    let consumable = `${this._capitalize(
+      this._multiWordsToLowerCamelCase(e.currentTarget.innerText)
+    )}`;
+    if(this.props.refillState[`stock${consumable}`] < this.props.refillState[`stock${consumable}Max`]){
+      this.props[`add${consumable}`]();
+      if (this.props.refillState[`stock${consumable}`] + 1 >= this.props.refillState[`stock${consumable}Min`]){
+        SetLog(' The ' + consumable + ' enough to get the coffee machine started. Now = ' +
+          (this.props.refillState[`stock${consumable}`] + 1));
+      }else{
+        SetLog(consumable + ' Added. Now = ' +
+          (this.props.refillState[`stock${consumable}`] + 1));
+      }
+    }else {
+      SetLog(consumable + ' Reached maximum capacity. Now = ' +
+        (this.props.refillState[`stock${consumable}`]));
+
     }
-    this._checkIfMinEnough();
   }
 
   /**
@@ -112,25 +129,22 @@ export default class Refill extends Component {
     for (let i = 1; i < wordsArray.length; i++) {
       newCamelCaseWord += `${wordsArray[i].charAt(0).toUpperCase() + wordsArray[i].slice(1)}`;
     }
-
     return newCamelCaseWord
   }
 
   /**
-   * Check if one of refill is not enough
+   * Capitalize string
    *
-   * @return {Boolean}
+   * @param s {String}
+   *
+   * @return {String} Capitalized
    * */
-  async  _checkIfMinEnough(){
-    let checkArr = ["arabica", "arabusta", "cream", "paperCup", "plasticCup", "sugar"];
-    for (let i=0; i<checkArr.length;i++){
-      if (this.state[`${checkArr[i]}`] < this.state[`${checkArr[i]}Min`]){
-        console.log(`${checkArr[i]} ********************`, this.state[`${checkArr[i]}`]);
-        this.props.refillEnough(false);
-      }
-    }
-    this.props.refillEnough(true);
+  _capitalize(s) {
+    if (typeof s !== 'string') return '';
+    return s.charAt(0).toUpperCase() + s.slice(1)
   }
+
+
 };
 
 

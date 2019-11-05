@@ -4,7 +4,8 @@ import Drink from "./components/drink/drink";
 import './App.css';
 import {connect} from 'react-redux';
 import {Route} from 'react-router';
-import {HashRouter, Redirect} from 'react-router-dom'
+import {HashRouter, Redirect} from 'react-router-dom';
+import SetLog from './constants/set-log';
 import {
   orderedEnough,
   orderedNotEnough,
@@ -22,8 +23,8 @@ import {
   cancelPaperCup,
   lessSugar,
   moreSugar,
-  start,
-  stop,
+  cookCoffee,
+  stopCoking,
 } from './actions/DrinkActions';
 import {
   stockedEnough,
@@ -34,19 +35,19 @@ import {
   useRobusta,
   addCream,
   useCream,
-  addCupPlastic,
-  useCupPlastic,
-  addCupPaper,
-  useCupPaper,
+  addPlasticCup,
+  usePlasticCup,
+  addPaperCup,
+  usePaperCup,
   addSugar,
   useSugar
 } from './actions/RefillActions';
-import * as types from "./constants/actions";
 
 class App extends Component {
   constructor(props) {
     super(props);
   }
+
   render() {
     const orderedEnough = this.props.orderedEnoughDispatch;
     const orderedNotEnough = this.props.orderedNotEnoughDispatch;
@@ -64,23 +65,22 @@ class App extends Component {
     const cancelPaperCup = this.props.cancelPaperCupDispatch;
     const lessSugar = this.props.lessSugarDispatch;
     const moreSugar = this.props.moreSugarDispatch;
-    const start = this.props.startDispatch;
-    const stop = this.props.stopDispatch;
-    const stockedEnough = this.props.stockedEnoughDispatch;
-    const stockedNotEnough = this.props.stockedNotEnoughDispatch;
+    const cookCoffee = this.props.cookCoffeeDispatch;
+    const stopCoking = this.props.stopCokingDispatch;
     const addArabica = this.props.addArabicaDispatch;
     const useArabica = this.props.useArabicaDispatch;
     const addRobusta = this.props.addRobustaDispatch;
     const useRobusta = this.props.useRobustaDispatch;
     const addCream = this.props.addCreamDispatch;
     const useCream = this.props.useCreamDispatch;
-    const addCupPlastic = this.props.addCupPlasticDispatch;
-    const useCupPlastic = this.props.useCupPlasticDispatch;
-    const addCupPaper = this.props.addCupPaperDispatch;
-    const useCupPaper = this.props.useCupPaperDispatch;
+    const addPlasticCup = this.props.addPlasticCupDispatch;
+    const usePlasticCup = this.props.usePlasticCupDispatch;
+    const addPaperCup = this.props.addPaperCupDispatch;
+    const usePaperCup = this.props.usePaperCupDispatch;
     const addSugar = this.props.addSugarDispatch;
     const useSugar = this.props.useSugarDispatch;
-
+    this.isStoreEnough();
+    const isStockedEnough = this.props.store.drink.isStockedEnough;
     return (
       <div className="App">
         <h6 className='AppTitle'>Coffee Automat</h6>
@@ -105,9 +105,14 @@ class App extends Component {
                    cancelPaperCup,
                    lessSugar,
                    moreSugar,
-                   start,
-                   stop
-
+                   cookCoffee,
+                   stopCoking,
+                   useArabica,
+                   useRobusta,
+                   useCream,
+                   usePlasticCup,
+                   usePaperCup,
+                   useSugar
                  )}
           />
           <Route path="/refill"
@@ -116,10 +121,10 @@ class App extends Component {
                    addArabica,
                    addRobusta,
                    addCream,
-                   addCupPlastic,
-                   addCupPaper,
-                   addSugar
-
+                   addPlasticCup,
+                   addPaperCup,
+                   addSugar,
+                   isStockedEnough
                  )}
           />
         </HashRouter>
@@ -145,11 +150,17 @@ class App extends Component {
     cancelPaperCup,
     lessSugar,
     moreSugar,
-    start,
-    stop,
+    cookCoffee,
+    stopCoking,
+    useArabica,
+    useRobusta,
+    useCream,
+    usePlasticCup,
+    usePaperCup,
+    useSugar
   ) {
     return <Drink
-      drinkState  = {drinkState}
+      drinkState={drinkState}
       orderedEnough={orderedEnough}
       orderedNotEnough={orderedNotEnough}
       putCoin={putCoin}
@@ -166,8 +177,14 @@ class App extends Component {
       cancelPaperCup={cancelPaperCup}
       lessSugar={lessSugar}
       moreSugar={moreSugar}
-      start={start}
-      stop={stop}
+      cookCoffee={cookCoffee}
+      stopCoking={stopCoking}
+      useArabica={useArabica}
+      useRobusta={useRobusta}
+      useCream={useCream}
+      usePlasticCup={usePlasticCup}
+      usePaperCup={usePaperCup}
+      useSugar={useSugar}
 
     />
   }
@@ -177,22 +194,43 @@ class App extends Component {
     addArabica,
     addRobusta,
     addCream,
-    addCupPlastic,
-    addCupPaper,
+    addPlasticCup,
+    addPaperCup,
     addSugar,
+    isStockedEnough
   ) {
     return <Refill
-      refillState = {refillState}
+      refillState={refillState}
       addArabica={addArabica}
       addRobusta={addRobusta}
       addCream={addCream}
-      addCupPlastic={addCupPlastic}
-      addCupPaper={addCupPaper}
+      addPlasticCup={addPlasticCup}
+      addPaperCup={addPaperCup}
       addSugar={addSugar}
+      isStockedEnough={isStockedEnough}
     />
   }
 
-
+  isStoreEnough() {
+    if (
+      this.props.store.refill.stockArabica >= this.props.store.refill.stockArabicaMin &&
+      this.props.store.refill.stockRobusta >= this.props.store.refill.stockRobustaMin &&
+      this.props.store.refill.stockCream >= this.props.store.refill.stockCreamMin &&
+      this.props.store.refill.stockSugar >= this.props.store.refill.stockSugarMin &&
+      this.props.store.refill.stockPaperCup >= this.props.store.refill.stockPaperCupMin &&
+      this.props.store.refill.stockPlasticCup >= this.props.store.refill.stockPlasticCupMin
+    ){
+      if (!this.props.store.drink.isStockedEnough){
+        SetLog('The stock filled in enough to get the coffee machine started');
+        this.props.stockedEnoughDispatch();
+      }
+    }else{
+      if (this.props.store.drink.isStockedEnough){
+        SetLog('The stock filled in NOT enough to get the coffee machine started');
+        this.props.stockedNotEnoughDispatch();
+      }
+    }
+  }
 }
 
 const mapStateToProps = store => {
@@ -215,8 +253,8 @@ const mapDispatchToProps = dispatch => ({
   cancelPaperCupDispatch: () => dispatch(cancelPaperCup()),
   lessSugarDispatch: () => dispatch(lessSugar()),
   moreSugarDispatch: () => dispatch(moreSugar()),
-  startDispatch: () => dispatch(start()),
-  stopDispatch: () => dispatch(stop()),
+  cookCoffeeDispatch: () => dispatch(cookCoffee()),
+  stopCokingDispatch: () => dispatch(stopCoking()),
   stockedEnoughDispatch: () => dispatch(stockedEnough()),
   stockedNotEnoughDispatch: () => dispatch(stockedNotEnough()),
   addArabicaDispatch: () => dispatch(addArabica()),
@@ -225,10 +263,10 @@ const mapDispatchToProps = dispatch => ({
   useRobustaDispatch: () => dispatch(useRobusta()),
   addCreamDispatch: () => dispatch(addCream()),
   useCreamDispatch: () => dispatch(useCream()),
-  addCupPlasticDispatch: () => dispatch(addCupPlastic()),
-  useCupPlasticDispatch: () => dispatch(useCupPlastic()),
-  addCupPaperDispatch: () => dispatch(addCupPaper()),
-  useCupPaperDispatch: () => dispatch(useCupPaper()),
+  addPlasticCupDispatch: () => dispatch(addPlasticCup()),
+  usePlasticCupDispatch: () => dispatch(usePlasticCup()),
+  addPaperCupDispatch: () => dispatch(addPaperCup()),
+  usePaperCupDispatch: () => dispatch(usePaperCup()),
   addSugarDispatch: () => dispatch(addSugar()),
   useSugarDispatch: () => dispatch(useSugar()),
 });
