@@ -1,12 +1,14 @@
-*{
+* {
   /*border: solid 1px red;*/
 }
-.refillScreen{
+
+.refillScreen {
   display: flex;
   flex-direction: column;
-  background-image: url("/assets/img/PortraiteBgrnd.svg");
+  background-image: url("http://webhelp.kiev.ua/coffee/assets/img/PortraiteBgrnd.svg");
   background-position: -9px -20px;
 }
+
 .card {
   position: relative;
   display: flex;
@@ -19,73 +21,98 @@
   border-radius: 4px;
 }
 
-.imgConsumable{
+.imgConsumable {
 }
+
 button.addBtn {
   margin: 82px 2px 0px 2px;
 }
+
 span.cardBadge {
   position: absolute;
   top: 18px;
   display: flex;
   left: 100px;
 }
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.top_or_left{
+
+.top_or_left {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
-.Line{
+
+.Line {
   display: flex;
   justify-content: space-between;
 }
+
 .Bottom_or_Left {
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
-.blackBox{
+
+.blackBox {
   display: flex;
-justify-content: center;
+  justify-content: center;
   align-items: center;
   color: #fff;
   width: 150px;
   height: 50px;
   border-radius: 5px;
   background-color: black;
+  text-align: center;
+  padding: 5px;
 }
 
-@media screen and (orientation:landscape)  {
+.notEnough {
+  position: relative;
+}
+
+.notEnough:after {
+  content: "not enough";
+  position: absolute;
+  top: 15px;
+  left: 40px;
+  transform: rotate(15deg);
+}
+
+@media screen and (orientation: landscape) {
   .refillScreen {
     display: flex;
     flex-direction: row-reverse;
     height: 100%;
-    background-image: url(/assets/img/LandscapeBgrnd.svg);
+    background-image: url("http://webhelp.kiev.ua/coffee/assets/img/LandscapeBgrnd.svg");
     background-repeat: no-repeat;
     background-position: 49px 57px;
   }
-  .container{
+
+  .container {
     flex-direction: row;
   }
-  .top_or_left{
+
+  .top_or_left {
     flex-direction: column;
     height: 250px;
   }
 
-  .down_or_right{
+  .down_or_right {
     height: 250px;
     justify-content: space-between;
   }
+
   .Bottom_or_Left {
     flex-direction: column-reverse;
     margin-right: -14px;
   }
-  .blackBox{
+
+  .blackBox {
     width: 50px;
     height: 150px;
   }

@@ -7,11 +7,14 @@ class TriggerPath extends Component{
   }
   render(){
     return (
-      <Link to={this.props.path.url}>
-        <Button variant="contained" color={this.props.path.color}>
-          {this.props.path.caption}
-        </Button>
-      </Link>
+      <div className={this.props.path.color}>
+        <Link  to={this.props.path.disabled ?'#/cooking': this.props.path.url}>
+          <Button disabled = {this.props.path.disabled} variant="contained" color={this.props.path.color}>
+            {this.props.path.caption}
+          </Button>
+        </Link>
+      </div>
+
     );
   }
 }

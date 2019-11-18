@@ -25,23 +25,22 @@ const InitialState = {
     // choosing interface disabled
     title: "Drink",
     path: {url:'/refill', caption: 'refill', color: 'secondary'},
-    timeLeft: 10,
+    cooking: false,
     isStockedEnough: false,
     isOrderedEnough: false,
     coins: 0,
     coinsMin: 1,
     coinsMax: 10,
-    orderedArabica: true,
+    orderedArabica: false,
     orderedRobusta: false,
     orderedCream: false,
-    orderedPlasticCup: true,
+    orderedPlasticCup: false,
     orderedPaperCup: false,
     orderedSugar: 0,
     orderedSugarMin: 0,
     orderedSugarMax: 4,
     cupEnabled: false,
     cupTaken: false,
-    preparing: false
   }
 };
 export default InitialState

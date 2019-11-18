@@ -18,14 +18,19 @@ export default class Drink extends Component {
     this.handleMoreSugarClicked = this.handleMoreSugarClicked.bind(this);
     this.handleCoinInserted = this.handleCoinInserted.bind(this);
     this.handleStartClicked = this.handleStartClicked.bind(this);
+    this._isOrderedEnough = this._isOrderedEnough.bind(this);
   }
 
   render() {
-    return <div className='drinkScreen'>
-      <div className='triggerPath' onClick={this.handleTriggerPathClicked}>
+    this._isOrderedEnough();
+    this._prepare();
+    return <div className={`drinkScreen`}>
+      <div className={`triggerPath ${this.props.drinkState.cupEnabled ||
+      this.props.drinkState.cooking?'cover':''}`} onClick={this.handleTriggerPathClicked}>
         <TriggerPath path={{
           ...this.props.drinkState.path,
-          color: this.props.drinkState.isStockedEnough ? 'primary' : 'secondary'
+          color: this.props.drinkState.isStockedEnough ? 'primary' : 'secondary',
+          disabled: this.props.drinkState.cupEnabled || this.props.drinkState.cooking
         }}/>
       </div>
       <div className='drinkInterface'>
@@ -42,31 +47,35 @@ export default class Drink extends Component {
           <div className='start_cupPlace'>
             <Button className='startBtn'
                     disabled={!(this.props.drinkState.isStockedEnough &&
-                      this.props.drinkState.coins > 0)}
+                      this.props.drinkState.isOrderedEnough)}
                     onClick={this.handleStartClicked}
                     variant="contained" color='primary'>
               cook coffee
             </Button>
-            <div className='cupPlace'>
-              <div style={{
-                transition: '1000ms',
-                position: 'relative',
-                overflow: 'hidden',
-                width: "100%",
-                height: 10 * (10 - this.props.drinkState.coins) + '%'
+            <div className='cupPlace' onClick={()=>this._handlerCupClicked(this.props.drinkState.cupEnabled)}>
+              <div className={this.props.drinkState.cooking ? "decrease" : "idleEmpty"} style={{
+                height: this.props.drinkState.cooking ||
+                this.props.drinkState.cupEnabled ? "0%" : "100%",
               }}>
                 <img className={`PrepareImg_${this.props.drinkState.orderedPlasticCup
-                  ? 'plastic' : 'paper'}`} src="./assets/img/Prepare.svg" alt="prepare"/>
+                  ? 'plastic' : this.props.drinkState.orderedPaperCup ? 'paper' : 'empty'}`}
+                     src="./assets/img/Prepare.svg" alt="prepare"/>
               </div>
-              <div style={{
-                transition: '1000ms',
-                position: 'relative',
-                overflow: 'hidden',
-                width: "100%",
-                height: 10 * (this.props.drinkState.coins) + '%'
+              <div className={this.props.drinkState.cooking ||
+              this.props.drinkState.cupEnabled ? "increase" : "idleFull"} style={{
+                height: this.props.drinkState.cooking ||
+                this.props.drinkState.cupEnabled ? "100%" : "0%",
               }}>
                 <img className={`PrepareImg_${this.props.drinkState.orderedPlasticCup
-                  ? 'plastic' : 'paper'}_Color`} src="./assets/img/Prepare.svg" alt="prepare"/>
+                  ? 'plastic' : this.props.drinkState.orderedPaperCup ? 'paper' :
+                    'empty'}_Color ${this.props.drinkState.cupEnabled
+                  ?
+                  `${this.props.drinkState.orderedPlasticCup
+                    ? 'plastic' : this.props.drinkState.orderedPaperCup ? 'paper' :
+                      'empty'}CupEnabled`
+                  :
+                  "cupDisabled"}`}
+                     src="./assets/img/Prepare.svg" alt="prepare"/>
               </div>
             </div>
           </div>
@@ -112,7 +121,7 @@ export default class Drink extends Component {
     </div>
   };
 
-  handleTriggerPathClicked(){
+  handleTriggerPathClicked() {
     SetLog('The Supplies door has opened')
   }
 
@@ -177,7 +186,9 @@ export default class Drink extends Component {
 
   handleStartClicked() {
     let log = '';
-    this.props.useCoin();
+    if (this.props.drinkState.coins > 0) {
+      this.props.useCoin();
+    }
     this.props.cookCoffee();
     if (this.props.drinkState.orderedArabica) {
       this.props.useArabica();
@@ -202,5 +213,46 @@ export default class Drink extends Component {
       log += `, ${this.props.drinkState.orderedSugar} Sugar`;
     }
     SetLog(`Used: ${log}`);
+    this.props.cookCoffee();
+  }
+
+  _handlerCupClicked(cupEnabled){
+    if (cupEnabled){
+      this.props.cupDisable();
+      this.props.cancelPaperCup();
+      this.props.cancelPlasticCup();
+    }
+  }
+
+  _prepare() {
+    if (this.props.drinkState.cooking) {
+      setTimeout(() => {
+        this.props.cookingTimeExpires();
+        this.props.orderedNotEnough();
+        this.props.cancelArabica();
+        this.props.cancelRobusta();
+        this.props.cancelCream();
+        this.props.cancelSugar();
+        this.props.cupEnable();
+      }, 10000)
+    }
+  }
+
+  _isOrderedEnough() {
+    if (this.props.drinkState.coins >= this.props.drinkState.coinsMin &&
+      (this.props.drinkState.orderedArabica || this.props.drinkState.orderedRobusta) &&
+      (this.props.drinkState.orderedPlasticCup || this.props.drinkState.orderedPaperCup)) {
+      if (!this.props.drinkState.isOrderedEnough) {
+        this.props.orderedEnough();
+      }
+      SetLog(`Ordered Enough to Start`);
+    } else {
+      SetLog(`Ordered NOT Enough to Start`);
+    }
+    if (this.props.drinkState.isStockedEnough) {
+      SetLog(`Supplies are filled enough to Start`);
+    } else {
+      SetLog(`Supplies are NOT filled enough to Start`);
+    }
   }
 };
