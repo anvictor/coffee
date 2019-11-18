@@ -34,7 +34,7 @@ export default class Drink extends Component {
         }}/>
       </div>
       <div className='drinkInterface'>
-        <div className='coinCupPlace'>
+        <div  className='coinCupPlace'>
           <div onClick={this.handleCoinInserted} className='coinPlace'>
             <Badge color="primary" badgeContent={this.props.drinkState.coins}
                    className='coinBadge'>
@@ -178,10 +178,16 @@ export default class Drink extends Component {
   }
 
   handleCoinInserted() {
-    if (this.props.drinkState.coins < this.props.drinkState.coinsMax) {
-      this.props.putCoin();
-      SetLog('Next Coin Inserted. Coins = ' + (this.props.drinkState.coins + 1));
+    if (this.props.drinkState.cupEnabled ||
+    this.props.drinkState.cooking){
+      return
+    } else{
+      if (this.props.drinkState.coins < this.props.drinkState.coinsMax) {
+        this.props.putCoin();
+        SetLog('Next Coin Inserted. Coins = ' + (this.props.drinkState.coins + 1));
+      }
     }
+
   }
 
   handleStartClicked() {
